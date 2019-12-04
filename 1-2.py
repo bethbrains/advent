@@ -9,7 +9,7 @@ def get_module_fuel (total, input):
     else:
         return total
 
-with open('input.txt') as fp:
+with open('1input.txt') as fp:
     for module in fp:
         module_fuel = get_module_fuel(0, int(module))
         total = total + module_fuel
