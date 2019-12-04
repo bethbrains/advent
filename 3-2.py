@@ -1,4 +1,4 @@
-def get_line_coordinates (line):
+def get_line_coordinates(line):
     line = line.split(",")
     x = 0
     y = 0
@@ -6,21 +6,21 @@ def get_line_coordinates (line):
     for dir in line:
         distance = int(dir.strip("RLUD"))
         if dir.startswith("R"):
-            for i in range(1, distance+1):
+            for i in range(1, distance + 1):
                 x = x + 1
-                line_coordinates.append([x,y])
+                line_coordinates.append([x, y])
         if dir.startswith("L"):
-            for i in range(1, distance+1):
+            for i in range(1, distance + 1):
                 x = x - 1
-                line_coordinates.append([x,y])
+                line_coordinates.append([x, y])
         if dir.startswith("U"):
-            for i in range(1, distance+1):
+            for i in range(1, distance + 1):
                 y = y + 1
-                line_coordinates.append([x,y])
+                line_coordinates.append([x, y])
         if dir.startswith("D"):
-            for i in range(1, distance+1):
+            for i in range(1, distance + 1):
                 y = y - 1
-                line_coordinates.append([x,y])
+                line_coordinates.append([x, y])
     return line_coordinates
 
 
@@ -37,6 +37,12 @@ def get_min_manhattan(crosses):
     return min(distances)
 
 
+def get_min_steps(crosses, wire1, wire2):
+    distances_in_steps = []
+    for cross in crosses:
+        distances_in_steps.append(wire1.index(cross)+1 + wire2.index(cross)+1)
+    return min(distances_in_steps)
+
 with open("3input.txt") as fp:
     paths = {}
     for num, line in enumerate(fp, 1):
@@ -46,3 +52,6 @@ with open("3input.txt") as fp:
     crosses = intersection(wire1, wire2)
     min_manhattan = get_min_manhattan(crosses)
     print(min_manhattan)
+    min_steps = get_min_steps(crosses, wire1, wire2)
+    print(min_steps)
+
