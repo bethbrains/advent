@@ -11,21 +11,6 @@ def makeMap(fp):
     return map
 
 
-def count_key(map, key):
-    count = len(map[key])
-    for node in map[key]:
-        if node in map:
-            count += count_key(map, node)
-    return count
-
-
-def count_orbits(map):
-    orbit_count = 0
-    for key in map:
-        orbit_count += count_key(map, key)
-    return orbit_count
-
-
 def path_node(map, node, path):
     for sat in map:
         if node == 'COM':
@@ -44,9 +29,9 @@ def find_path(map, node):
 
 with open('6input.txt') as fp:
     map = makeMap(fp)
-    count = count_orbits(map)
-    print(count)
-    for node in find_path(map, 'YOU'):
-        if node in find_path(map, 'SAN'):
+    santa_path = find_path(map, 'SAN')
+    you_path = find_path(map, 'YOU')
+    for node in you_path:
+        if node in santa_path:
             print(find_path(map, 'YOU').index(node)-1 + find_path(map, 'SAN').index(node)-1)
             break

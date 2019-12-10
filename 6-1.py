@@ -28,6 +28,5 @@ def count_orbits(map):
 
 with open('6input.txt') as fp:
     map = makeMap(fp)
-    print(map)
     count = count_orbits(map)
     print(count)
