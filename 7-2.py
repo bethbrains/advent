@@ -16,7 +16,7 @@ def process(memory, phase_setting, input_val):
         if opcode == 99:
             print('output val:')
             print(output_value)
-            return memory, None
+            return memory, None, opcode
         elif opcode == 3:
             # input
             if phase_setting is not None and input_val is not None:
@@ -43,8 +43,6 @@ def process(memory, phase_setting, input_val):
 
             if opcode == 1:
                 # add
-                print('param2')
-                print(param2value)
                 memory[memory[i + 3]] = param1value + param2value
                 i += 4
             elif opcode == 2:
@@ -80,7 +78,7 @@ def process(memory, phase_setting, input_val):
             elif opcode == 4:
                 # output
                 output_value = param1value
-                return memory, output_value
+                return memory, output_value, opcode
                 i = i + 2
 
 
@@ -88,19 +86,26 @@ with open("7input.txt") as fp:
     input_data = list(map(int, fp.read().split(",")))
     feedback_phase_settings = [5,6,7,8,9]
     feedback_phase_setting_combos = list(itertools.permutations(feedback_phase_settings,5))
-    computers = {}
     max_output = 0
     for combo in [(9,8,7,6,5)]:
+        computers = {}
         for i in range(0,5):
             computers[i] = list(input_data)
         input_val = 0
         done = False
+        output_list = []
         while not done:
             for phase_setting in combo:
-                print(combo.index(phase_setting))
-                computers[combo.index(phase_setting)], output = process(computers[combo.index(phase_setting)], phase_setting, input_val)
+                computers[combo.index(phase_setting)], output, opcode = process(computers[combo.index(phase_setting)], phase_setting, input_val)
                 input_val = output
-                if output is None:
+                output_list.insert(0, output)
+                if output == 139629729:
+                    print('got it')
+                    print(opcode)
+                    done = True
+                    break
+                if opcode == 99:
+                    print('halt')
                     done = True
                     break
         max_output = input_val if input_val > max_output else max_output
