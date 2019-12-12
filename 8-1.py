@@ -1,22 +1,39 @@
-import math
-
 with open("8input.txt") as input:
     input = input.read()
-    width = 3
-    height = 2
+    width = 25
+    height = 6
     area = height * width
     length = len(input)
-    layer = 0
-    pixels = {}
-    for i in range(1, length):
-        print(i)
-        print(input[i - 1])
-        col = width if i % width == 0 else i % width
-        print(f"col: {str(col)}")
-        row = math.ceil(i / width)
-        print(f"row: {str(row)}")
-        layer = math.ceil(i / area)
-        print(f"layer: {str(layer)}")
-        pixels[i] = {"p": input[i - 1], "row": row, "col": col, "layer": layer}
-    print(pixels)
-    print(len[x for x in pixels if x['layer'] == 2])
+    print(length)
+    num_layers = length // area
+    print(num_layers)
+    layers = []
+    for i in range(0,num_layers):
+        layers.append(input[:area])
+        input = input[area:]
+    layer_index = 0
+    count_of_0 = layers[layer_index].count('0')
+    for layer in layers:
+        if count_of_0 > layer.count('0'):
+            count_of_0 = layer.count('0')
+            layer_index = layers.index(layer)
+    print(layers[layer_index].count('1') * layers[layer_index].count('2'))
+
+    for layer in layers:
+        print(layer)
+    #0 is black, 1 is white, and 2 is transparent.
+    image = list(layers[-1])
+    print('and den')
+    print(layers[-1])
+    print(layers[-2])
+    for i in range(num_layers-1, -1, -1):
+        for px_i in range(0, area-1):
+            if layers[i][px_i] == '0' or layers[i][px_i] == '1':
+                image[px_i] = layers[i][px_i]
+
+    image = ''.join(image)
+    image = image.replace('0', ' ')
+    for i in range(1, height+2):
+        row = image[:width]
+        print(row)
+        image = image[width:]

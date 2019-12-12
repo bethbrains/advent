@@ -19,8 +19,6 @@ def get_slope(a, b):
         slope = fractions.Fraction(rise, run), quad
     return slope
 
-# order the slopes
-
 
 def detect_asteroids(asteroids):
     for a in asteroids:
