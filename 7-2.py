@@ -2,10 +2,6 @@ import itertools
 
 
 def process(memory, phase_setting, input_val):
-    print(memory)
-    print(phase_setting)
-    print('input val:')
-    print(input_val)
     i = 0
     given_phase_setting = False
     output_value = ''
@@ -102,8 +98,7 @@ with open("7input.txt") as fp:
                 if output == 139629729:
                     print('got it')
                     print(opcode)
-                    done = True
-                    break
+                    print(output_list)
                 if opcode == 99:
                     print('halt')
                     done = True
