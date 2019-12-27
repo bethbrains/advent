@@ -1,18 +1,19 @@
 import itertools
 
 
-def process(memory, phase_setting, input_val):
-    i = 0
+
+
+def process(memory, pc, phase_setting, input_val, outputs):
+    i = pc
     given_phase_setting = False
-    output_value = ''
     while True:
         instruction = memory[i]
         opcode = instruction % 100
+        print(i)
+        print(opcode)
 
         if opcode == 99:
-            print('output val:')
-            print(output_value)
-            return memory, None, opcode
+            return opcode
         elif opcode == 3:
             # input
             if phase_setting is not None and input_val is not None:
@@ -73,9 +74,9 @@ def process(memory, phase_setting, input_val):
                 i += 4
             elif opcode == 4:
                 # output
-                output_value = param1value
-                return memory, output_value, opcode
+                outputs.append(param1value)
                 i = i + 2
+                return opcode, i
 
 
 with open("7input.txt") as fp:
@@ -83,23 +84,30 @@ with open("7input.txt") as fp:
     feedback_phase_settings = [5,6,7,8,9]
     feedback_phase_setting_combos = list(itertools.permutations(feedback_phase_settings,5))
     max_output = 0
-    for combo in [(9,8,7,6,5)]:
-        computers = {}
+    pcs = [0,0,0,0,0]
+    for combo in [(9, 8, 7, 6, 5)]: # this is just from the test; set it back to in feedback_phase_setting_combos
+        computers = []
+        outputs = []
+        for i in range(5):
+            outputs.append([])
+        # outputs[0].append(73)
+        print(outputs)
         for i in range(0,5):
-            computers[i] = list(input_data)
+            computers.append(list(input_data)) # confirmed this gives 5 unique memory lists -- append does deep copy, not reference.
         input_val = 0
         done = False
-        output_list = []
         while not done:
-            for phase_setting in combo:
-                computers[combo.index(phase_setting)], output, opcode = process(computers[combo.index(phase_setting)], phase_setting, input_val)
-                input_val = output
-                output_list.insert(0, output)
-                if output == 139629729:
+            for index in range(len(combo)):
+                print("computer: {}".format(index))
+                opcode, pc = process(computers[index], pcs[index], combo[index], input_val, outputs[index])
+                pcs[index] = pc
+                input_val = outputs[index][-1]
+                if input_val == 139629729:
                     print('got it')
                     print(opcode)
-                    print(output_list)
+                    print(outputs)
                 if opcode == 99:
+                    print(outputs)
                     print('halt')
                     done = True
                     break
